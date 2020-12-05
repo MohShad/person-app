@@ -1,4 +1,4 @@
-package br.com.person.api.restapiperson;
+package br.com.person.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

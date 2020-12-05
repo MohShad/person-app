@@ -1,4 +1,4 @@
-package br.com.person.api.restapiperson;
+package br.com.person.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
