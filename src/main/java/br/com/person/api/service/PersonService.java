@@ -1,4 +1,8 @@
 package br.com.person.api.service;
 
-public class PersonService {
+import br.com.person.api.dto.PersonRequestDTO;
+
+public interface PersonService {
+
+    Long savePerson (PersonRequestDTO personRequestDTO);
 }
