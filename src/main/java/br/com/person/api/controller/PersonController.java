@@ -60,7 +60,7 @@ public class PersonController {
     @ApiOperation(value = "Busca de pessoa por Cpf.", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code = 401, message = "Não autorizado"),
-            @ApiResponse(code = 200, message = "Consulta Pessoa.")
+            @ApiResponse(code = 200, message = "Consultar Pessoa por Cpf.")
     })
     @GetMapping("/{cpf}")
     public ResponseEntity<Person> getById(
@@ -85,7 +85,7 @@ public class PersonController {
     @ApiOperation(value = "Busca Todas as pessoas.", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code = 401, message = "Não autorizado"),
-            @ApiResponse(code = 200, message = "Consulta Pessoas.")
+            @ApiResponse(code = 200, message = "Consultar Pessoas.")
     })
     @GetMapping()
     public ResponseEntity<PersonResponseListDTO> getAll(

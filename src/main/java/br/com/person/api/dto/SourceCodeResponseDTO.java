@@ -9,9 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApiResponseDTO {
+public class SourceCodeResponseDTO {
 
-    private Boolean success;
-    private String message;
+    private String description;
+    private String content;
 
 }

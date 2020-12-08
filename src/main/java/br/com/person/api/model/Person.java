@@ -6,6 +6,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
@@ -37,6 +38,7 @@ public class Person implements Serializable {
 
     @Basic
     @Column(name = "email", nullable = true)
+    @Email
     private String email;
 
     @Basic
