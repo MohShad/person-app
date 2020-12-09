@@ -1,0 +1,56 @@
+<div class="list row">
+    </div> -->
+    <div class="col-md-6">
+        <h4>Person List</h4>
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let person of persons; let i = index" [class.active]="i == currentIndex"
+                (click)="setActivePerson(person, i)">
+                {{ person.nome }}
+            </li>
+        </ul>
+
+    </div>
+    <div class="col-md-6">
+        <div *ngIf="currentPerson">
+
+            <h4>Person</h4>
+            <div>
+                <label><strong>Nome:</strong></label>
+                {{ currentPerson.nome }}
+            </div>
+            <div>
+                <label><strong>Sexo:</strong></label>
+                {{ currentPerson.sexo }}
+            </div>
+            <div>
+                <label><strong>E-mail:</strong></label>
+                {{ currentPerson.email }}
+            </div>
+            <div>
+                <label><strong>Data de Nascimento:</strong></label>
+                {{ currentPerson.dataNascimento }}
+            </div>
+            <div>
+                <label><strong>Naturalidade:</strong></label>
+                {{ currentPerson.naturalidade }}
+            </div>
+            <div>
+                <label><strong>Nacionalidade:</strong></label>
+                {{ currentPerson.nacionalidade }}
+            </div>
+            <div>
+                <label><strong>CPF:</strong></label>
+                {{ currentPerson.cpf     }}
+            </div>
+
+            <a class="badge badge-warning" routerLink="/person/{{ currentPerson.id }}">
+                Edit
+            </a>
+        </div>
+
+        <div *ngIf="!currentPerson">
+            <br />
+            <p>Please click on a Person...</p>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,6 @@
 package br.com.person.api.service;
 
 import br.com.person.api.dto.PersonRequestDTO;
-import br.com.person.api.dto.PersonResponseListDTO;
 import br.com.person.api.dto.PersonResponseUpdateDTO;
 import br.com.person.api.model.Person;
 import br.com.person.api.repository.PersonRepository;
@@ -62,9 +61,15 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonResponseListDTO getAll(Integer page, Integer size) {
+    public Person getById(Long id) {
+        logger.info("Person, getById");
+        Optional<Person> person = personRepository.findById(id);
+        return person.get();
+    }
+
+    @Override
+    public List<Person> getAll(Integer page, Integer size) {
         logger.info("Person, getAll");
-        PersonResponseListDTO personResponseListDTO = new PersonResponseListDTO();
 
         List<Person> personList = new ArrayList<>();
         Pageable paging = PageRequest.of(page, size);
@@ -74,9 +79,7 @@ public class PersonServiceImpl implements PersonService {
             if (person != null)
                 personList.add(person);
 
-        personResponseListDTO.setPerson(personList);
-
-        return personResponseListDTO;
+        return personList;
     }
 
     @Override
