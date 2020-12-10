@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import * as moment from 'moment';
+
 import { PersonService } from '../../services/person.service'
 
 @Component({
@@ -9,7 +11,7 @@ import { PersonService } from '../../services/person.service'
 export class PersonListComponent implements OnInit {
 
     persons: any = [];
-    currentPerson = null;
+    currentPerson : any;
     currentIndex = -1;
     nome = '';
 
@@ -24,7 +26,6 @@ export class PersonListComponent implements OnInit {
         this.personService.getAll()
             .subscribe(
                 data => {
-                    debugger
                     this.persons = data;
                 },
                 error => {
@@ -34,14 +35,14 @@ export class PersonListComponent implements OnInit {
 
     refreshList(): void {
         this.retrievePersons();
-        debugger
         this.currentPerson = null;
         this.currentIndex = -1;
     }
 
     setActivePerson(person, index): void {
-        debugger
         this.currentPerson = person;
+        let myDate: Date = moment(this.currentPerson.dataNascimento).format("DD/MM/YYYY");
+        this.currentPerson.dataNascimento = myDate;
         this.currentIndex = index;
     }
 

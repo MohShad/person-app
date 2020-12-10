@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as moment from 'moment';
 
 import { PersonService } from '../../services/person.service'
-import { Person } from '../../model/Person';
 
 @Component({
     selector: 'app-person-details',
@@ -11,7 +11,7 @@ import { Person } from '../../model/Person';
 })
 export class PersonDetailsComponent implements OnInit {
 
-    currentPerson : any = {};
+    currentPerson: any = {};
     message = '';
 
     constructor(
@@ -29,6 +29,8 @@ export class PersonDetailsComponent implements OnInit {
             .subscribe(
                 data => {
                     this.currentPerson = data;
+                    let myDate: Date = moment(this.currentPerson.dataNascimento).format("DD/MM/YYYY");
+                    this.currentPerson.dataNascimento = myDate;
                     console.log(data);
                 },
                 error => {

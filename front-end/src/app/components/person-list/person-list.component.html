@@ -1,14 +1,30 @@
 <div class="list row">
-    </div> -->
     <div class="col-md-6">
         <h4>Person List</h4>
         <ul class="list-group">
             <li class="list-group-item" *ngFor="let person of persons; let i = index" [class.active]="i == currentIndex"
                 (click)="setActivePerson(person, i)">
+                <strong>Nome:</strong>
                 {{ person.nome }}
+                <strong style="margin-left: 20px;">CPF:</strong>
+                {{ person.cpf}}
             </li>
         </ul>
+        <!-- <div class="row" class="list-group-item" *ngFor="let person of persons; let i = index"
+            [class.active]="i == currentIndex" (click)="setActivePerson(person, i)">
+            <div class="col-md-9">
+                <label><strong>Nome:</strong></label>
+                {{ person.nome }}
+            </div>
+            <div class="col-md-9">
+                <label><strong>CPF:</strong></label>
+                {{ person.cpf }}
+            </div>
+        </div> -->
 
+        <!-- <button class="m-3 btn btn-sm btn-danger" (click)="removeAllTutorials()">
+            Remove All
+        </button> -->
     </div>
     <div class="col-md-6">
         <div *ngIf="currentPerson">
@@ -43,9 +59,10 @@
                 {{ currentPerson.cpf     }}
             </div>
 
-            <a class="badge badge-warning" routerLink="/person/{{ currentPerson.id }}">
+            <button class="btn btn-info" type="button" style="float: right; width: 100px;"
+                routerLink="/person/{{ currentPerson.id }}">
                 Edit
-            </a>
+            </button>
         </div>
 
         <div *ngIf="!currentPerson">
