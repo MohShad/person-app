@@ -4,6 +4,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as moment from 'moment';
 
 import { PersonService } from '../../services/person.service'
+import { AlertService } from '../../services/alert.service'
+
 @Component({
     selector: 'app-person-add',
     templateUrl: './person-add.component.html',
@@ -21,6 +23,8 @@ export class PersonAddComponent implements OnInit {
         cpf: '',
     };
 
+    systemDate = moment(new Date(), 'YYYY-MM-DD 00:00:00');
+
     personForm = new FormGroup({
         person_nome: new FormControl('', [Validators.required, Validators.minLength(3)]),
         person_sexo: new FormControl(''),
@@ -33,7 +37,8 @@ export class PersonAddComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private personService: PersonService) {
+        private personService: PersonService,
+        private alertService: AlertService) {
     }
 
     ngOnInit(): void {
@@ -43,28 +48,51 @@ export class PersonAddComponent implements OnInit {
         return this.personForm.controls;
     }
 
-    submit() {
+    async submit() {
+        let isValidCpf: any;
+        const myDate = moment(this.personForm.controls.person_dataNascimento.value, 'YYYY-MM-DD');
         if (this.personForm.status === 'VALID') {
-            const myDate = moment(this.personForm.controls.person_dataNascimento.value, 'YYYY-MM-DD');
-            const data = {
-                nome: this.personForm.controls.person_nome.value,
-                sexo: this.personForm.controls.person_sexo.value,
-                email: this.personForm.controls.person_email.value,
-                dataNascimento: myDate,
-                naturalidade: this.personForm.controls.person_naturalidade.value,
-                nacionalidade: this.personForm.controls.person_nacionalidade.value,
-                cpf: this.personForm.controls.person_cpf.value,
-            };
-
-            this.personService.create(data)
+            await this.personService.existCpf(this.personForm.controls.person_cpf.value)
                 .subscribe(
                     response => {
-                        console.log(response);
-                        this.router.navigate(['/persons']);
+                        isValidCpf = response.success;
+                        if (myDate.day() < this.systemDate.day()) {
+                            if (!isValidCpf) {
+                                const data = {
+                                    nome: this.personForm.controls.person_nome.value,
+                                    sexo: this.personForm.controls.person_sexo.value,
+                                    email: this.personForm.controls.person_email.value,
+                                    dataNascimento: myDate,
+                                    naturalidade: this.personForm.controls.person_naturalidade.value,
+                                    nacionalidade: this.personForm.controls.person_nacionalidade.value,
+                                    cpf: this.personForm.controls.person_cpf.value,
+                                };
+
+                                this.personService.create(data)
+                                    .subscribe(
+                                        response => {
+                                            console.log(response);
+                                            this.router.navigate(['/persons']);
+                                            this.alertService.showSuccessAlert('Sucesso!', 'A pessoa foi cadastrado com sucesso!');
+                                        },
+                                        error => {
+                                            console.log(error);
+                                        });
+                            } else {
+                                this.alertService.showInfoAlert('CPF Duplicado;', 'Informe outro CPF!');
+                                this.person.cpf = '';
+                            }
+                        } else {
+                            this.alertService.showInfoAlert('Data inválido!', 'A data de nascimento deve ser menor que data atual!');
+                            this.person.dataNascimento = '';
+                        }
+
                     },
                     error => {
                         console.log(error);
                     });
+        } else {
+            this.alertService.showWarningAlert('Erro', 'Deve preencher Todos os campos obrigatórios!')
         }
     }
 

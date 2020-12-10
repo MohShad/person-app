@@ -1,50 +1,88 @@
 <div style="width: 400px; margin: auto;">
     <div *ngIf="currentPerson" class="edit-form">
         <h4>Person</h4>
-        <form>
+        <form [formGroup]="personForm" (ngSubmit)="submit()">
             <div class="form-group">
-                <label for="nome">nome</label>
-                <input type="text" class="form-control" id="nome" [(ngModel)]="currentPerson.nome" name="nome" />
+                <label for="nome">Nome*</label>
+                <input type="text" formControlName="person_nome" id="nome" placeholder="insira seu Nome"
+                    [(ngModel)]="currentPerson.nome" class="form-control" name="nome" />
+                <div *ngIf="f.person_nome.touched && f.person_nome.invalid" class="alert alert-danger">
+                    <div *ngIf="f.person_nome.errors.required">Nome é obrigatório.</div>
+                    <div *ngIf="f.person_nome.errors.minlength">O nome deve ter 3 caracteres no mínimo.</div>
+                </div>
             </div>
+
+            <label for="sexo">Sexo</label>
             <div class="form-group">
-                <label for="sexo">Sexo</label>
-                <input type="text" class="form-control" id="sexo" [(ngModel)]="currentPerson.sexo" name="sexo" />
+                <div class="row">
+                    <div class="col">
+                        <input id="male" type="radio" value="m" name="person_sexo" formControlName="person_sexo"
+                            [(ngModel)]="currentPerson.sexo">
+                        <label for="male" style="margin-left: 6px;">Masculino</label>
+                    </div>
+
+                    <div class="col">
+                        <input id="female" type="radio" value="f" name="person_sexo" formControlName="person_sexo"
+                            [(ngModel)]="currentPerson.sexo">
+                        <label for="female" style="margin-left: 6px;">Feminino</label>
+                    </div>
+
+                    <div class="col">
+                        <input id="outros" type="radio" value="o" name="person_sexo" formControlName="person_sexo"
+                            [(ngModel)]="currentPerson.sexo" checked="true">
+                        <label for="outros" style="margin-left: 6px;">Outros</label>
+                    </div>
+                </div>
             </div>
+
             <div class="form-group">
                 <label for="email">E-mail</label>
-                <input type="text" class="form-control" id="email" [(ngModel)]="currentPerson.email" name="email" />
+                <input type="text" formControlName="person_email" id="email" placeholder="insira seu E-mail"
+                    [(ngModel)]="currentPerson.email" class="form-control" name="email" />
+                <div *ngIf="f.person_email.invalid" class="alert alert-danger">
+                    <div *ngIf="f.person_email.errors.email">Informe email válido.</div>
+                </div>
             </div>
+
             <div class="form-group">
-                <label for="dataNascimento">Data de Nascimento</label>
-                <input type="text" class="form-control" id="dataNascimento" [(ngModel)]="currentPerson.dataNascimento"
-                    name="dataNascimento" />
+                <label for="dataNascimento">Data de Nascimento*</label>
+                <!-- mask="d0/M0/0000" dropSpecialCharacters="true" [specialCharacters]="[ '/' ]" -->
+                <input type="date" formControlName="person_dataNascimento" id="dataNascimento"
+                    placeholder="insira sua Data de Nascimento" class="form-control"
+                    [(ngModel)]="currentPerson.dataNascimento" name="dataNascimento" />
+                <div *ngIf="f.person_dataNascimento.touched && f.person_dataNascimento.invalid"
+                    class="alert alert-danger">
+                    <div *ngIf="f.person_dataNascimento.errors.required">Data de nascimento é obrigatório.</div>
+                </div>
             </div>
+
             <div class="form-group">
                 <label for="naturalidade">Naturalidade</label>
-                <input type="text" class="form-control" id="naturalidade" [(ngModel)]="currentPerson.naturalidade"
+                <input type="text" formControlName="person_naturalidade" id="naturalidade"
+                    placeholder="insira sua Naturalidade" class="form-control" [(ngModel)]="currentPerson.naturalidade"
                     name="naturalidade" />
             </div>
+
             <div class="form-group">
                 <label for="nacionalidade">Nacionalidade</label>
-                <input type="text" class="form-control" id="nacionalidade" [(ngModel)]="currentPerson.nacionalidade"
-                    name="nacionalidade" />
+                <input type="text" formControlName="person_nacionalidade" id="nacionalidade"
+                    placeholder="insira sua Nacionalidade" class="form-control"
+                    [(ngModel)]="currentPerson.nacionalidade" name="nacionalidade" />
             </div>
+
             <div class="form-group">
-                <label for="cpf">CPF</label>
-                <input type="text" disabled="true" class="form-control" id="cpf" [(ngModel)]="currentPerson.cpf"
-                    name="cpf" />
+                <label for="cpf">CPF*</label>
+                <input mask="000.000.000-99" formControlName="person_cpf" id="cpf" placeholder="insira seu CPF"
+                    [(ngModel)]="currentPerson.cpf" class="form-control" name="cpf" disabled="true" />
+                <div *ngIf="f.person_cpf.touched && f.person_cpf.invalid" class="alert alert-danger">
+                    <div *ngIf="f.person_cpf.errors.required">CPF é obrigatório.</div>
+                </div>
             </div>
+
+            <button class="btn badge-danger" type="button" (click)="deletePerson()">Delete</button>
+            <button class="btn btn-primary" style="float: right;" type="submit">Update</button>
 
         </form>
-
-        <button class="badge badge-danger mr-2" type="button" (click)="deletePerson()">
-            Delete
-        </button>
-
-        <button type="submit" class="badge badge-success" (click)="updatePerson()">
-            Update
-        </button>
-        <p>{{ message }}</p>
     </div>
 
     <div *ngIf="!currentPerson">

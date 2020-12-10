@@ -10,7 +10,6 @@ import { PersonListComponent } from './components/person-list/person-list.compon
 import { PersonAddComponent } from './components/person-add/person-add.component';
 import { PersonDetailsComponent } from './components/person-details/person-details.component';
 
-
 const maskConfigFunction: () => Partial<IConfig> = () => {
     return {
         validation: false,

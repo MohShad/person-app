@@ -10,10 +10,27 @@
             </div>
         </div>
 
+        <label for="sexo">Sexo</label>
         <div class="form-group">
-            <label for="sexo">Sexo</label>
-            <input type="text" formControlName="person_sexo" id="sexo" placeholder="insira seu Sexo"
-                [(ngModel)]="person.sexo" class="form-control" name="sexo" />
+            <div class="row">
+                <div class="col">
+                    <input id="male" type="radio" value="m" name="person_sexo" formControlName="person_sexo"
+                        [(ngModel)]="person.sexo">
+                    <label for="male" style="margin-left: 6px;">Masculino</label>
+                </div>
+
+                <div class="col">
+                    <input id="female" type="radio" value="f" name="person_sexo" formControlName="person_sexo"
+                        [(ngModel)]="person.sexo">
+                    <label for="female" style="margin-left: 6px;">Feminino</label>
+                </div>
+
+                <div class="col">
+                    <input id="outros" type="radio" value="o" name="person_sexo" formControlName="person_sexo"
+                        [(ngModel)]="person.sexo" checked="true">
+                    <label for="outros" style="margin-left: 6px;">Outros</label>
+                </div>
+            </div>
         </div>
 
         <div class="form-group">

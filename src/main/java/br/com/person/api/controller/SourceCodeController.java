@@ -28,7 +28,7 @@ public class SourceCodeController {
     @GetMapping()
     public ResponseEntity<?> getSourceCode() {
         logger.info("GET - Source Code, getSourceCode");
-        String gitHubUrl = "https://github.com/MohShad/rest-api-person";
+        String gitHubUrl = "https://github.com/MohShad/rest-api-person/tree/master";
         return new ResponseEntity(new SourceCodeResponseDTO("Url do código fonte do projeto no github.", gitHubUrl), HttpStatus.OK);
     }
 }

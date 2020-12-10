@@ -39,9 +39,9 @@ export class PersonListComponent implements OnInit {
         this.currentIndex = -1;
     }
 
-    setActivePerson(person, index): void {
+    setActivePerson(person: Object, index: number): void {
         this.currentPerson = person;
-        let myDate: Date = moment(this.currentPerson.dataNascimento).format("DD/MM/YYYY");
+        let myDate = moment(this.currentPerson.dataNascimento).format("MM/DD/YYYY");
         this.currentPerson.dataNascimento = myDate;
         this.currentIndex = index;
     }

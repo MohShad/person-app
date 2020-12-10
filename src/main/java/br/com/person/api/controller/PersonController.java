@@ -87,6 +87,32 @@ public class PersonController {
         }
     }
 
+    @ApiOperation(value = "Verificar a existencia do Cpf.", produces = "application/json")
+    @ApiResponses({
+            @ApiResponse(code = 401, message = "Não autorizado"),
+            @ApiResponse(code = 200, message = "Consultar Pessoa por Cpf.")
+    })
+    @GetMapping("/existCpf/{cpf}")
+    public ResponseEntity<ApiResponseDTO> existCpf(
+            @ApiParam(value = "Cpf da pessoa.", required = true)
+            @PathVariable("cpf") String cpf) {
+        logger.info("GET - Person, existCpf");
+        try {
+            if (personRepository.existsByCpf(cpf)) {
+                return new ResponseEntity(new ApiResponseDTO(true, "O cpf informado existe no banco de dados."),
+                        HttpStatus.OK);
+            } else {
+                return new ResponseEntity(new ApiResponseDTO(false, "O cpf informado não existe no banco de dados."),
+                        HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            return new ResponseEntity(new ApiResponseDTO(false, "Internal error: " + e.getMessage()),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @ApiOperation(value = "Busca de pessoa por id.", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code = 401, message = "Não autorizado"),

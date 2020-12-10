@@ -2,29 +2,34 @@
     <div class="col-md-6">
         <h4>Person List</h4>
         <ul class="list-group">
+            <div class="table">
+                <div class="row" style="margin-left: 5px;">
+                    <div class="col-4">
+                        <strong>Nome:</strong>
+                    </div>
+                    <div class="col-4">
+                        <strong>CPF:</strong>
+                    </div>
+                    <div class="col-4">
+                        <strong>E-mail:</strong>
+                    </div>
+                </div>
+            </div>
             <li class="list-group-item" *ngFor="let person of persons; let i = index" [class.active]="i == currentIndex"
                 (click)="setActivePerson(person, i)">
-                <strong>Nome:</strong>
-                {{ person.nome }}
-                <strong style="margin-left: 20px;">CPF:</strong>
-                {{ person.cpf}}
+                <div class="row">
+                    <div class="col-4">
+                        {{ person.nome }}
+                    </div>
+                    <div class="col-4">
+                        {{ person.cpf}}
+                    </div>
+                    <div class="col-4">
+                        {{ person.email}}
+                    </div>
+                </div>
             </li>
         </ul>
-        <!-- <div class="row" class="list-group-item" *ngFor="let person of persons; let i = index"
-            [class.active]="i == currentIndex" (click)="setActivePerson(person, i)">
-            <div class="col-md-9">
-                <label><strong>Nome:</strong></label>
-                {{ person.nome }}
-            </div>
-            <div class="col-md-9">
-                <label><strong>CPF:</strong></label>
-                {{ person.cpf }}
-            </div>
-        </div> -->
-
-        <!-- <button class="m-3 btn btn-sm btn-danger" (click)="removeAllTutorials()">
-            Remove All
-        </button> -->
     </div>
     <div class="col-md-6">
         <div *ngIf="currentPerson">

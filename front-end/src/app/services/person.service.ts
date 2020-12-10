@@ -21,33 +21,40 @@ export class PersonService {
 
     getAll(): Observable<Person[]> {
         let httpHeaders: HttpHeaders = new HttpHeaders();
-        return this.http.get<Person[]>(baseUrl+"?page=0&size=100", {
+        return this.http.get<Person[]>(baseUrl + "?page=0&size=100", {
             headers: this.createAuthorizationHeader(httpHeaders)
         });
     }
 
-    get(id): Observable<Person> {
+    get(id: any): Observable<Person> {
         let httpHeaders: HttpHeaders = new HttpHeaders();
         return this.http.get<Person>(`${baseUrl}/getById/${id}`, {
             headers: this.createAuthorizationHeader(httpHeaders)
         });
     }
 
-    create(data): Observable<any> {
+    existCpf(cpf: any): Observable<any> {
+        let httpHeaders: HttpHeaders = new HttpHeaders();
+        return this.http.get<any>(`${baseUrl}/existCpf/${cpf}`, {
+            headers: this.createAuthorizationHeader(httpHeaders)
+        });
+    }
+
+    create(data: any): Observable<any> {
         let httpHeaders: HttpHeaders = new HttpHeaders();
         return this.http.post(baseUrl, data, {
             headers: this.createAuthorizationHeader(httpHeaders)
         });
     }
 
-    update(id, data): Observable<any> {
+    update(id: any, data: any): Observable<any> {
         let httpHeaders: HttpHeaders = new HttpHeaders();
         return this.http.put(`${baseUrl}/${id}`, data, {
             headers: this.createAuthorizationHeader(httpHeaders)
         });
     }
 
-    delete(id): Observable<any> {
+    delete(id: any): Observable<any> {
         let httpHeaders: HttpHeaders = new HttpHeaders();
         return this.http.delete(`${baseUrl}/${id}`, {
             headers: this.createAuthorizationHeader(httpHeaders)
