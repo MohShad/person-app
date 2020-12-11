@@ -11,15 +11,14 @@ import { PersonService } from '../../services/person.service'
 export class PersonListComponent implements OnInit {
 
     persons: any = [];
-    currentPerson : any;
+    currentPerson: any;
     currentIndex = -1;
-    nome = '';
+    cpf: any;
 
     constructor(private personService: PersonService) { }
 
     ngOnInit(): void {
         this.retrievePersons();
-
     }
 
     retrievePersons(): void {
@@ -44,6 +43,20 @@ export class PersonListComponent implements OnInit {
         let myDate = moment(this.currentPerson.dataNascimento).format("MM/DD/YYYY");
         this.currentPerson.dataNascimento = myDate;
         this.currentIndex = index;
+    }
+
+    search(): void {
+        this.personService.getByCpf(this.cpf)
+            .subscribe(
+                data => {
+                    let myDate = moment(data.dataNascimento).format("MM/DD/YYYY");
+                    this.currentPerson = data;
+                    this.currentPerson.dataNascimento = myDate;
+                    console.log(data);
+                },
+                error => {
+                    console.log(error);
+                });
     }
 
 }

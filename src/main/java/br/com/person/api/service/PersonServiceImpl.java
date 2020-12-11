@@ -101,7 +101,6 @@ public class PersonServiceImpl implements PersonService {
                     return ResponseEntity.ok().body(updated);
                 })
                 .orElse(ResponseEntity.notFound().build());
-
     }
 
     @Override
@@ -114,6 +113,4 @@ public class PersonServiceImpl implements PersonService {
                     return ResponseEntity.ok().build();
                 }).orElse(ResponseEntity.notFound().build());
     }
-
-
 }

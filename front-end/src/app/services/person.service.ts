@@ -33,6 +33,13 @@ export class PersonService {
         });
     }
 
+    getByCpf(cpf: any): Observable<Person> {
+        let httpHeaders: HttpHeaders = new HttpHeaders();
+        return this.http.get<Person>(`${baseUrl}/getByCpf/${cpf}`, {
+            headers: this.createAuthorizationHeader(httpHeaders)
+        });
+    }
+
     existCpf(cpf: any): Observable<any> {
         let httpHeaders: HttpHeaders = new HttpHeaders();
         return this.http.get<any>(`${baseUrl}/existCpf/${cpf}`, {

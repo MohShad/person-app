@@ -90,7 +90,7 @@ public class PersonController {
     @ApiOperation(value = "Verificar a existencia do Cpf.", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code = 401, message = "Não autorizado"),
-            @ApiResponse(code = 200, message = "Consultar Pessoa por Cpf.")
+            @ApiResponse(code = 200, message = "Verificar a existencia do Cpf.")
     })
     @GetMapping("/existCpf/{cpf}")
     public ResponseEntity<ApiResponseDTO> existCpf(
