@@ -1,7 +1,7 @@
 package br.com.person.api.service;
 
 import br.com.person.api.dto.PersonRequestDTO;
-import br.com.person.api.dto.PersonResponseUpdateDTO;
+import br.com.person.api.dto.PersonRequestUpdateDTO;
 import br.com.person.api.model.Person;
 import br.com.person.api.repository.PersonRepository;
 import org.slf4j.Logger;
@@ -84,7 +84,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     @Transactional
-    public ResponseEntity<Person> updateById(PersonResponseUpdateDTO person, Long id) {
+    public ResponseEntity<Person> updateById(PersonRequestUpdateDTO person, Long id) {
         logger.info("Person, updateById");
         return personRepository.findById(id)
                 .map(record -> {

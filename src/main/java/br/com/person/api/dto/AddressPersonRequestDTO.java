@@ -14,7 +14,8 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonResponseUpdateDTO {
+public class AddressPersonRequestDTO {
+
 
     @NotBlank(message = "Nome é obrigatório.")
     @Size(min = 3, max = 100)
@@ -31,5 +32,12 @@ public class PersonResponseUpdateDTO {
     private String naturalidade;
 
     private String nacionalidade;
+
+    @NotBlank(message = "CPF é obrigatório.")
+    @Size(min = 11, max = 11)
+    private String cpf;
+
+    @NotBlank(message = "Endereco é obrigatório.")
+    private String address;
 
 }

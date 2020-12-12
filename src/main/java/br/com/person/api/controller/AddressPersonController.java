@@ -1,12 +1,13 @@
 package br.com.person.api.controller;
 
+import br.com.person.api.dto.AddressPersonRequestDTO;
+import br.com.person.api.dto.AddressPersonRequestUpdateDTO;
 import br.com.person.api.dto.ApiResponseDTO;
-import br.com.person.api.dto.PersonRequestDTO;
 import br.com.person.api.dto.PersonResponseSaveDTO;
-import br.com.person.api.dto.PersonRequestUpdateDTO;
+import br.com.person.api.model.AddressPerson;
 import br.com.person.api.model.Person;
-import br.com.person.api.repository.PersonRepository;
-import br.com.person.api.service.PersonService;
+import br.com.person.api.repository.AddressPersonRepository;
+import br.com.person.api.service.AddressPersonService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -23,17 +24,17 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/person")
+@RequestMapping("/api/v2/person")
 @CrossOrigin(origins = "http://localhost:4200")
-public class PersonController {
+public class AddressPersonController {
 
-    private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
-
-    @Autowired
-    private PersonRepository personRepository;
+    private static final Logger logger = LoggerFactory.getLogger(AddressPersonController.class);
 
     @Autowired
-    private PersonService personService;
+    private AddressPersonRepository addressPersonRepository;
+
+    @Autowired
+    private AddressPersonService addressPersonService;
 
     @ApiOperation(value = "Cadastro pessoa", produces = "application/json")
     @ApiResponses({
@@ -43,14 +44,14 @@ public class PersonController {
     @PostMapping
     public ResponseEntity<?> registerPerson(
             @ApiParam(value = "Obejto person para criar pessoa em banco de dados.", required = true)
-            @Valid @RequestBody PersonRequestDTO personRequestDTO) {
-        logger.info("POST - Person, registerPerson");
+            @Valid @RequestBody AddressPersonRequestDTO addressPersonRequestDTO) {
+        logger.info("POST - AddressPerson-V2, registerPerson");
         try {
-            if (personRepository.existsByCpf(personRequestDTO.getCpf())) {
-                return new ResponseEntity(new ApiResponseDTO(false, "Existe pessoa registrado com CPF: " + personRequestDTO.getCpf()),
+            if (addressPersonRepository.existsByCpf(addressPersonRequestDTO.getCpf())) {
+                return new ResponseEntity(new ApiResponseDTO(false, "Existe pessoa registrado com CPF: " + addressPersonRequestDTO.getCpf()),
                         HttpStatus.BAD_REQUEST);
             }
-            Long id = personService.savePerson(personRequestDTO);
+            Long id = addressPersonService.savePerson(addressPersonRequestDTO);
 
             return new ResponseEntity(new PersonResponseSaveDTO(true, "Pessoa registrado com sucesso.", id),
                     HttpStatus.CREATED);
@@ -73,11 +74,11 @@ public class PersonController {
             @PathVariable("cpf") String cpf) {
         logger.info("GET - Person, getByCpf");
         try {
-            if (!personRepository.existsByCpf(cpf)) {
+            if (!addressPersonRepository.existsByCpf(cpf)) {
                 return new ResponseEntity(new ApiResponseDTO(false, "Não existe pessoa registrado com CPF: " + cpf),
                         HttpStatus.BAD_REQUEST);
             }
-            Person person = personService.getByCpf(cpf);
+            AddressPerson person = addressPersonService.getByCpf(cpf);
             return new ResponseEntity<Person>(person, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,7 +99,7 @@ public class PersonController {
             @PathVariable("cpf") String cpf) {
         logger.info("GET - Person, existCpf");
         try {
-            if (personRepository.existsByCpf(cpf)) {
+            if (addressPersonRepository.existsByCpf(cpf)) {
                 return new ResponseEntity(new ApiResponseDTO(true, "O cpf informado existe no banco de dados."),
                         HttpStatus.OK);
             } else {
@@ -119,18 +120,18 @@ public class PersonController {
             @ApiResponse(code = 200, message = "Consultar Pessoa por id.")
     })
     @GetMapping("/getById/{id}")
-    public ResponseEntity<Person> getById(
+    public ResponseEntity<AddressPerson> getById(
             @ApiParam(value = "id da pessoa.", required = true)
             @PathVariable("id") Long id) {
         logger.info("GET - Person, getById");
         try {
-            Optional<Person> person = personRepository.findById(id);
+            Optional<AddressPerson> person = addressPersonRepository.findById(id);
             if (!person.isPresent()) {
                 return new ResponseEntity(new ApiResponseDTO(false, "A pessoa com ID: " + id + " não foi encontrado"),
                         HttpStatus.BAD_REQUEST);
             }
-            Person pr = personService.getById(id);
-            return new ResponseEntity<Person>(pr, HttpStatus.OK);
+            AddressPerson pr = addressPersonService.getById(id);
+            return new ResponseEntity<AddressPerson>(pr, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
@@ -145,15 +146,15 @@ public class PersonController {
             @ApiResponse(code = 200, message = "Consultar Pessoas.")
     })
     @GetMapping()
-    public ResponseEntity<List<Person>> getAll(
+    public ResponseEntity<List<AddressPerson>> getAll(
             @ApiParam(value = "N/A.", required = false)
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "1") Integer size) {
         logger.info("GET - Person, getAll");
 
         try {
-            List<Person> personList = personService.getAll(page, size);
-            return new ResponseEntity<List<Person>>(personList, HttpStatus.OK);
+            List<AddressPerson> personList = addressPersonService.getAll(page, size);
+            return new ResponseEntity<List<AddressPerson>>(personList, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
@@ -170,16 +171,16 @@ public class PersonController {
     @PutMapping("/{id}")
     public ResponseEntity<Person> updateById(
             @PathVariable("id") Long id,
-            @Valid @RequestBody PersonRequestUpdateDTO personRequestUpdateDTO
+            @Valid @RequestBody AddressPersonRequestUpdateDTO addressPersonRequestUpdateDTO
     ) {
-        logger.info("PUT - Person, updateById");
+        logger.info("PUT - AddressPerson-V2, updateById");
         try {
 
-            Optional<Person> person = personRepository.findById(id);
+            Optional<AddressPerson> person = addressPersonRepository.findById(id);
             if (!person.isPresent())
                 return new ResponseEntity(new ApiResponseDTO(false, "Não existe pessoa registrado com id: " + id),
                         HttpStatus.BAD_REQUEST);
-            ResponseEntity<Person> pr = personService.updateById(personRequestUpdateDTO, id);
+            Object pr = addressPersonService.updateById(addressPersonRequestUpdateDTO, id);
             return new ResponseEntity(new PersonResponseSaveDTO(true, "A pessoa foi atualizado com sucesso,", id), HttpStatus.OK);
 
         } catch (Exception e) {
@@ -196,16 +197,16 @@ public class PersonController {
             @ApiResponse(code = 200, message = "Atualizar pessoa.")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Person> deleteById(
+    public ResponseEntity<AddressPerson> deleteById(
             @PathVariable("id") Long id) {
         logger.info("DELETE - Person, deleteById");
         try {
 
-            Optional<Person> person = personRepository.findById(id);
+            Optional<AddressPerson> person = addressPersonRepository.findById(id);
             if (!person.isPresent())
                 return new ResponseEntity(new ApiResponseDTO(false, "Não existe pessoa registrado com id: " + id),
                         HttpStatus.BAD_REQUEST);
-            ResponseEntity<Object> pr = personService.deleteById(id);
+            ResponseEntity<Object> pr = addressPersonService.deleteById(id);
             return new ResponseEntity(new PersonResponseSaveDTO(true, "A pessoa foi excluida com sucesso,", id), HttpStatus.OK);
 
         } catch (Exception e) {
@@ -215,4 +216,5 @@ public class PersonController {
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }

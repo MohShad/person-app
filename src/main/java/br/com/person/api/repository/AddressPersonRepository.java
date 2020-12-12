@@ -1,7 +1,6 @@
 package br.com.person.api.repository;
 
-import br.com.person.api.model.Person;
-import org.springframework.context.annotation.Primary;
+import br.com.person.api.model.AddressPerson;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
@@ -10,15 +9,14 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-@Primary
-public interface PersonRepository extends CrudRepository<Person, Long> {
+public interface AddressPersonRepository extends CrudRepository<AddressPerson, Long> {
 
     Boolean existsByCpf(String cpf);
 
-    Optional<Person> findById(Long id);
+    Optional<AddressPerson> findById(Long id);
 
-    Optional<Person> findByCpf(String cpf);
+    Optional<AddressPerson> findByCpf(String cpf);
 
-    Page<Person> findAll(Pageable pageable);
+    Page<AddressPerson> findAll(Pageable pageable);
 
 }

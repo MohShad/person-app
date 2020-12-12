@@ -22,24 +22,51 @@ import java.util.List;
 public class SwaggerConfig {
 
     @Bean
-    public Docket api() {
+    public Docket swaggerPersonApiv1() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("rest-api-person-1.0")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("br.com.person.api.controller"))
-                .paths(PathSelectors.any())
+                .paths(PathSelectors.ant("/api/v1/person/**"))
                 .build()
-                .apiInfo(this.informacoesApi().build())
+                .apiInfo(this.informacoesApiV1().build())
                 .useDefaultResponseMessages(false)
                 .globalResponseMessage(RequestMethod.GET, responseMessageForGET());
     }
 
-    private ApiInfoBuilder informacoesApi() {
+    @Bean
+    public Docket swaggerPersonApiv2() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("rest-api-person-2.0")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("br.com.person.api.controller"))
+                .paths(PathSelectors.ant("/api/v2/person/**"))
+                .build()
+                .apiInfo(this.informacoesApiV2().build())
+                .useDefaultResponseMessages(false)
+                .globalResponseMessage(RequestMethod.GET, responseMessageForGET());
+    }
+
+    private ApiInfoBuilder informacoesApiV1() {
 
         ApiInfoBuilder apiInfoBuilder = new ApiInfoBuilder();
 
         apiInfoBuilder.title("API REST - Person");
         apiInfoBuilder.description("API REST - Person");
         apiInfoBuilder.version("1.0");
+        apiInfoBuilder.license("Licença - PRIVADO");
+        apiInfoBuilder.contact(this.contato());
+
+        return apiInfoBuilder;
+    }
+
+    private ApiInfoBuilder informacoesApiV2() {
+
+        ApiInfoBuilder apiInfoBuilder = new ApiInfoBuilder();
+
+        apiInfoBuilder.title("API REST - Person");
+        apiInfoBuilder.description("API REST - Person");
+        apiInfoBuilder.version("2.0");
         apiInfoBuilder.license("Licença - PRIVADO");
         apiInfoBuilder.contact(this.contato());
 

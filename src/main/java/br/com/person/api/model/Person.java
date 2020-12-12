@@ -19,12 +19,13 @@ import java.util.Date;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "id")
     private Long id;
 
@@ -78,5 +79,17 @@ public class Person implements Serializable {
         this.nacionalidade = nacionalidade;
         this.cpf = cpf;
         this.createdAt = createdAt;
+    }
+
+    public Person(Long id, String nome, String sexo, @Email String email, Date dataNascimento, String naturalidade, String nacionalidade, @Size(min = 11, max = 11) String cpf, Date updatedAt) {
+        this.id = id;
+        this.nome = nome;
+        this.sexo = sexo;
+        this.email = email;
+        this.dataNascimento = dataNascimento;
+        this.naturalidade = naturalidade;
+        this.nacionalidade = nacionalidade;
+        this.cpf = cpf;
+        this.updatedAt = updatedAt;
     }
 }

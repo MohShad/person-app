@@ -1,8 +1,6 @@
 package br.com.person.api.controller;
 
-import br.com.person.api.dto.ApiResponseDTO;
 import br.com.person.api.dto.SourceCodeResponseDTO;
-import br.com.person.api.model.Person;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

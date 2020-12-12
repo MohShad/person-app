@@ -1,7 +1,7 @@
 package br.com.person.api.service;
 
 import br.com.person.api.dto.PersonRequestDTO;
-import br.com.person.api.dto.PersonResponseUpdateDTO;
+import br.com.person.api.dto.PersonRequestUpdateDTO;
 import br.com.person.api.model.Person;
 import org.springframework.http.ResponseEntity;
 
@@ -17,7 +17,7 @@ public interface PersonService {
 
     List<Person> getAll(Integer page, Integer size);
 
-    ResponseEntity<Person> updateById(PersonResponseUpdateDTO personResponseUpdateDTO, Long id);
+    ResponseEntity<Person> updateById(PersonRequestUpdateDTO personRequestUpdateDTO, Long id);
 
     ResponseEntity<Object> deleteById(Long id);
 }
