@@ -5,8 +5,8 @@
             <input type="text" formControlName="person_nome" id="nome" placeholder="insira seu Nome"
                 [(ngModel)]="person.nome" class="form-control" name="nome" />
             <div *ngIf="f.person_nome.touched && f.person_nome.invalid" class="alert alert-danger">
-                <div *ngIf="f.person_nome.errors.required">Nome é obrigatório.</div>
-                <div *ngIf="f.person_nome.errors.minlength">O nome deve ter 3 caracteres no mínimo.</div>
+                <div *ngIf="f.person_nome.errors!.required">Nome é obrigatório.</div>
+                <div *ngIf="f.person_nome.errors!.minlength">O nome deve ter 3 caracteres no mínimo.</div>
             </div>
         </div>
 
@@ -38,7 +38,7 @@
             <input type="text" formControlName="person_email" id="email" placeholder="insira seu E-mail"
                 [(ngModel)]="person.email" class="form-control" name="email" />
             <div *ngIf="f.person_email.invalid" class="alert alert-danger">
-                <div *ngIf="f.person_email.errors.email">Informe email válido.</div>
+                <div *ngIf="f.person_email.errors!.email">Informe email válido.</div>
             </div>
         </div>
 
@@ -49,7 +49,7 @@
                 placeholder="insira sua Data de Nascimento" class="form-control" [(ngModel)]="person.dataNascimento"
                 name="dataNascimento" />
             <div *ngIf="f.person_dataNascimento.touched && f.person_dataNascimento.invalid" class="alert alert-danger">
-                <div *ngIf="f.person_dataNascimento.errors.required">Data de nascimento é obrigatório.</div>
+                <div *ngIf="f.person_dataNascimento.errors!.required">Data de nascimento é obrigatório.</div>
             </div>
         </div>
 
@@ -72,7 +72,7 @@
             <input mask="000.000.000-99" formControlName="person_cpf" id="cpf" placeholder="insira seu CPF"
                 [(ngModel)]="person.cpf" class="form-control" name="cpf" />
             <div *ngIf="f.person_cpf.touched && f.person_cpf.invalid" class="alert alert-danger">
-                <div *ngIf="f.person_cpf.errors.required">CPF é obrigatório.</div>
+                <div *ngIf="f.person_cpf.errors!.required">CPF é obrigatório.</div>
             </div>
         </div>
 
