@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/source")
+@RequestMapping("/api/")
 public class SourceCodeController {
 
     private static final Logger logger = LoggerFactory.getLogger(SourceCodeController.class);
@@ -23,7 +23,7 @@ public class SourceCodeController {
             @ApiResponse(code = 401, message = "Não autorizado"),
             @ApiResponse(code = 200, message = "Retorno do Url.")
     })
-    @GetMapping()
+    @GetMapping({"v1/source","v2/source"})
     public ResponseEntity<?> getSourceCode() {
         logger.info("GET - Source Code, getSourceCode");
         String gitHubUrl = "https://github.com/MohShad/rest-api-person/tree/master";

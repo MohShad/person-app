@@ -72,7 +72,7 @@ public class AddressPersonController {
     public ResponseEntity<Person> getByCpf(
             @ApiParam(value = "Cpf da pessoa.", required = true)
             @PathVariable("cpf") String cpf) {
-        logger.info("GET - Person, getByCpf");
+        logger.info("GET - AddressPerson-v2, getByCpf");
         try {
             if (!addressPersonRepository.existsByCpf(cpf)) {
                 return new ResponseEntity(new ApiResponseDTO(false, "Não existe pessoa registrado com CPF: " + cpf),
@@ -97,7 +97,7 @@ public class AddressPersonController {
     public ResponseEntity<ApiResponseDTO> existCpf(
             @ApiParam(value = "Cpf da pessoa.", required = true)
             @PathVariable("cpf") String cpf) {
-        logger.info("GET - Person, existCpf");
+        logger.info("GET - AddressPerson-v2, existCpf");
         try {
             if (addressPersonRepository.existsByCpf(cpf)) {
                 return new ResponseEntity(new ApiResponseDTO(true, "O cpf informado existe no banco de dados."),
@@ -123,7 +123,7 @@ public class AddressPersonController {
     public ResponseEntity<AddressPerson> getById(
             @ApiParam(value = "id da pessoa.", required = true)
             @PathVariable("id") Long id) {
-        logger.info("GET - Person, getById");
+        logger.info("GET - AddressPerson-v2, getById");
         try {
             Optional<AddressPerson> person = addressPersonRepository.findById(id);
             if (!person.isPresent()) {
@@ -150,7 +150,7 @@ public class AddressPersonController {
             @ApiParam(value = "N/A.", required = false)
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "1") Integer size) {
-        logger.info("GET - Person, getAll");
+        logger.info("GET - AddressPerson-v2, getAll");
 
         try {
             List<AddressPerson> personList = addressPersonService.getAll(page, size);
@@ -173,7 +173,7 @@ public class AddressPersonController {
             @PathVariable("id") Long id,
             @Valid @RequestBody AddressPersonRequestUpdateDTO addressPersonRequestUpdateDTO
     ) {
-        logger.info("PUT - AddressPerson-V2, updateById");
+        logger.info("PUT - AddressPerson-v2, updateById");
         try {
 
             Optional<AddressPerson> person = addressPersonRepository.findById(id);
@@ -199,7 +199,7 @@ public class AddressPersonController {
     @DeleteMapping("/{id}")
     public ResponseEntity<AddressPerson> deleteById(
             @PathVariable("id") Long id) {
-        logger.info("DELETE - Person, deleteById");
+        logger.info("DELETE - AddressPerson-v2, deleteById");
         try {
 
             Optional<AddressPerson> person = addressPersonRepository.findById(id);
