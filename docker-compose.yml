@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  backendserver:
+    build: ../REST-API-PERSON/
+    ports:
+      - "8080:8080"
+  frontend:
+    build: ./front-end/
+    links:
+      - "backendserver"
+    depends_on:
+      - "backendserver"
+    ports:
+      - "4200:4200"
