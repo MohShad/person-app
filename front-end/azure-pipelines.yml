@@ -1,0 +1,27 @@
+pool:
+    vmImage: 'windows-2019'
+
+steps:
+    - task: NodeTool@0
+      inputs:
+          versionSpec: '12.x'
+      displayName: 'Install Node.js'
+
+    - task: CmdLine@2
+      inputs:
+        script: 'npm install -g @angular/cli'
+        displayName: 'Install Agular-cli'
+
+    - script: |
+          npm install
+          ng build --prod
+      displayName: 'npm install and build '
+
+    - task: CopyFiles@2
+      inputs:
+          SourceFolder: '$(System.DefaultWorkingDirectory)/dist'
+          Contents: '**'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)/dist/*'
+
+    - publish: '$(Build.ArtifactStagingDirectory)/dist/*'
+      artifact: front-end
