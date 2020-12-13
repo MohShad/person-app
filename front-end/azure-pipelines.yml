@@ -1,27 +1,25 @@
 pool:
-    vmImage: 'windows-2019'
+    vmImage: 'ubuntu-latest'
 
 steps:
     - task: NodeTool@0
       inputs:
           versionSpec: '12.x'
       displayName: 'Install Node.js'
-
     - task: CmdLine@2
       inputs:
-        script: 'npm install -g @angular/cli'
-        displayName: 'Install Agular-cli'
-
-    - script: |
-          npm install
-          ng build --prod
-      displayName: 'npm install and build '
+          script: |
+              cd front-end
+              npm install -g @angular/cli
+              npm install
+              npm run build
 
     - task: CopyFiles@2
       inputs:
-          SourceFolder: '$(System.DefaultWorkingDirectory)/dist'
+          SourceFolder: '$(System.DefaultWorkingDirectory)/front-end/dist/frontend-person'
           Contents: '**'
-          TargetFolder: '$(Build.ArtifactStagingDirectory)/dist/*'
-
-    - publish: '$(Build.ArtifactStagingDirectory)/dist/*'
-      artifact: front-end
+          TargetFolder: '$(Build.ArtifactStagingDirectory)/dist'
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: drop'
+      inputs:
+          PathtoPublish: '$(build.artifactstagingdirectory)'
