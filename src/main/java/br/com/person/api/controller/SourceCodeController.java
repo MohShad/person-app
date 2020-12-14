@@ -21,12 +21,12 @@ public class SourceCodeController {
     @ApiOperation(value = "Busca url do código fonte do projeto.", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code = 401, message = "Não autorizado"),
-            @ApiResponse(code = 200, message = "Retorno do Url.")
+            @ApiResponse(code = 202, message = "Retorno do Url.")
     })
     @GetMapping({"v1/source","v2/source"})
     public ResponseEntity<?> getSourceCode() {
         logger.info("GET - Source Code, getSourceCode");
         String gitHubUrl = "https://github.com/MohShad/rest-api-person/tree/master";
-        return new ResponseEntity(new SourceCodeResponseDTO("Url do código fonte do projeto no github.", gitHubUrl), HttpStatus.OK);
+        return new ResponseEntity(new SourceCodeResponseDTO("Url do código fonte do projeto no github.", gitHubUrl), HttpStatus.ACCEPTED);
     }
 }

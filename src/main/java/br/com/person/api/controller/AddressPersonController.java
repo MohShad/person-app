@@ -39,7 +39,7 @@ public class AddressPersonController {
     @ApiOperation(value = "Cadastro pessoa", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code = 401, message = "Não autorizado"),
-            @ApiResponse(code = 200, message = "A Pessoa foi cadastrado com sucesso.")
+            @ApiResponse(code = 201, message = "A Pessoa foi cadastrado com sucesso.")
     })
     @PostMapping
     public ResponseEntity<?> registerPerson(
@@ -66,7 +66,7 @@ public class AddressPersonController {
     @ApiOperation(value = "Busca de pessoa por Cpf.", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code = 401, message = "Não autorizado"),
-            @ApiResponse(code = 200, message = "Consultar Pessoa por Cpf.")
+            @ApiResponse(code = 202, message = "Consultar Pessoa por Cpf.")
     })
     @GetMapping("/getByCpf/{cpf}")
     public ResponseEntity<Person> getByCpf(
@@ -79,7 +79,7 @@ public class AddressPersonController {
                         HttpStatus.BAD_REQUEST);
             }
             AddressPerson person = addressPersonService.getByCpf(cpf);
-            return new ResponseEntity<Person>(person, HttpStatus.OK);
+            return new ResponseEntity<Person>(person, HttpStatus.ACCEPTED);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
@@ -91,7 +91,7 @@ public class AddressPersonController {
     @ApiOperation(value = "Verificar a existencia do Cpf.", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code = 401, message = "Não autorizado"),
-            @ApiResponse(code = 200, message = "Verificar a existencia do Cpf.")
+            @ApiResponse(code = 202, message = "Verificar a existencia do Cpf.")
     })
     @GetMapping("/existCpf/{cpf}")
     public ResponseEntity<ApiResponseDTO> existCpf(
@@ -101,10 +101,10 @@ public class AddressPersonController {
         try {
             if (addressPersonRepository.existsByCpf(cpf)) {
                 return new ResponseEntity(new ApiResponseDTO(true, "O cpf informado existe no banco de dados."),
-                        HttpStatus.OK);
+                        HttpStatus.ACCEPTED);
             } else {
                 return new ResponseEntity(new ApiResponseDTO(false, "O cpf informado não existe no banco de dados."),
-                        HttpStatus.OK);
+                        HttpStatus.ACCEPTED);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,7 +117,7 @@ public class AddressPersonController {
     @ApiOperation(value = "Busca de pessoa por id.", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code = 401, message = "Não autorizado"),
-            @ApiResponse(code = 200, message = "Consultar Pessoa por id.")
+            @ApiResponse(code = 202, message = "Consultar Pessoa por id.")
     })
     @GetMapping("/getById/{id}")
     public ResponseEntity<AddressPerson> getById(
@@ -131,7 +131,7 @@ public class AddressPersonController {
                         HttpStatus.BAD_REQUEST);
             }
             AddressPerson pr = addressPersonService.getById(id);
-            return new ResponseEntity<AddressPerson>(pr, HttpStatus.OK);
+            return new ResponseEntity<AddressPerson>(pr, HttpStatus.ACCEPTED);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
@@ -143,7 +143,7 @@ public class AddressPersonController {
     @ApiOperation(value = "Busca Todas as pessoas.", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code = 401, message = "Não autorizado"),
-            @ApiResponse(code = 200, message = "Consultar Pessoas.")
+            @ApiResponse(code = 202, message = "Consultar Pessoas.")
     })
     @GetMapping()
     public ResponseEntity<List<AddressPerson>> getAll(
@@ -154,7 +154,7 @@ public class AddressPersonController {
 
         try {
             List<AddressPerson> personList = addressPersonService.getAll(page, size);
-            return new ResponseEntity<List<AddressPerson>>(personList, HttpStatus.OK);
+            return new ResponseEntity<List<AddressPerson>>(personList, HttpStatus.ACCEPTED);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
@@ -166,7 +166,7 @@ public class AddressPersonController {
     @ApiOperation(value = "Atualizar registro da pessoa.", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code = 401, message = "Não autorizado"),
-            @ApiResponse(code = 200, message = "Atualizar pessoa.")
+            @ApiResponse(code = 201, message = "Atualizar pessoa.")
     })
     @PutMapping("/{id}")
     public ResponseEntity<Person> updateById(
@@ -181,7 +181,7 @@ public class AddressPersonController {
                 return new ResponseEntity(new ApiResponseDTO(false, "Não existe pessoa registrado com id: " + id),
                         HttpStatus.BAD_REQUEST);
             Object pr = addressPersonService.updateById(addressPersonRequestUpdateDTO, id);
-            return new ResponseEntity(new PersonResponseSaveDTO(true, "A pessoa foi atualizado com sucesso,", id), HttpStatus.OK);
+            return new ResponseEntity(new PersonResponseSaveDTO(true, "A pessoa foi atualizado com sucesso,", id), HttpStatus.CREATED);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -194,7 +194,7 @@ public class AddressPersonController {
     @ApiOperation(value = "Excluir registro da pessoa.", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code = 401, message = "Não autorizado"),
-            @ApiResponse(code = 200, message = "Atualizar pessoa.")
+            @ApiResponse(code = 202, message = "Atualizar pessoa.")
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<AddressPerson> deleteById(
@@ -207,7 +207,7 @@ public class AddressPersonController {
                 return new ResponseEntity(new ApiResponseDTO(false, "Não existe pessoa registrado com id: " + id),
                         HttpStatus.BAD_REQUEST);
             ResponseEntity<Object> pr = addressPersonService.deleteById(id);
-            return new ResponseEntity(new PersonResponseSaveDTO(true, "A pessoa foi excluida com sucesso,", id), HttpStatus.OK);
+            return new ResponseEntity(new PersonResponseSaveDTO(true, "A pessoa foi excluida com sucesso,", id), HttpStatus.ACCEPTED);
 
         } catch (Exception e) {
             e.printStackTrace();
