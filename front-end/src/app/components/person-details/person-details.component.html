@@ -73,7 +73,7 @@
             <div class="form-group">
                 <label for="cpf">CPF*</label>
                 <input mask="000.000.000-99" formControlName="person_cpf" id="cpf" placeholder="insira seu CPF"
-                    [(ngModel)]="currentPerson.cpf" class="form-control" name="cpf" [disabled]="true" />
+                    [(ngModel)]="currentPerson.cpf" class="form-control" name="cpf" [attr.disabled]="true" />
                 <div *ngIf="f.person_cpf.touched && f.person_cpf.invalid" class="alert alert-danger">
                     <div *ngIf="f.person_cpf.errors!.required">CPF é obrigatório.</div>
                 </div>

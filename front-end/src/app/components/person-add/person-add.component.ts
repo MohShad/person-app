@@ -23,7 +23,7 @@ export class PersonAddComponent implements OnInit {
         cpf: '',
     };
 
-    systemDate = moment(new Date(), 'YYYY-MM-DD 00:00:00');
+    systemDate = moment(new Date()).format('YYYY-MM-DD');
 
     personForm = new FormGroup({
         person_nome: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -50,19 +50,20 @@ export class PersonAddComponent implements OnInit {
 
     async submit() {
         let isValidCpf: any;
-        const myDate = moment(this.personForm.controls.person_dataNascimento.value, 'YYYY-MM-DD');
+        const myDate = moment(this.personForm.controls.person_dataNascimento.value).format('YYYY-MM-DD');
         if (this.personForm.status === 'VALID') {
             await this.personService.existCpf(this.personForm.controls.person_cpf.value)
                 .subscribe(
                     response => {
                         isValidCpf = response.success;
-                        if (myDate.day() < this.systemDate.day()) {
+                        if (myDate < this.systemDate) {
+                            const date = moment(myDate, 'YYYY-MM-DD 00:00:00');
                             if (!isValidCpf) {
                                 const data = {
                                     nome: this.personForm.controls.person_nome.value,
                                     sexo: this.personForm.controls.person_sexo.value,
                                     email: this.personForm.controls.person_email.value,
-                                    dataNascimento: myDate,
+                                    dataNascimento: date,
                                     naturalidade: this.personForm.controls.person_naturalidade.value,
                                     nacionalidade: this.personForm.controls.person_nacionalidade.value,
                                     cpf: this.personForm.controls.person_cpf.value,

@@ -15,7 +15,7 @@ import { AlertService } from '../../services/alert.service';
 export class PersonDetailsComponent implements OnInit {
 
     currentPerson: any = {};
-    systemDate = moment(new Date(), 'YYYY-MM-DD 00:00:00');
+    systemDate = moment(new Date()).format('YYYY-MM-DD');
 
     personForm = new FormGroup({
         person_nome: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -43,7 +43,7 @@ export class PersonDetailsComponent implements OnInit {
 
     submit() {
 
-        const myDate = moment(this.personForm.controls.person_dataNascimento.value, 'YYYY-MM-DD');
+        const myDate = moment(this.personForm.controls.person_dataNascimento.value).format('YYYY-MM-DD');
 
         Swal.fire({
             title: 'Deseja alterar?',
@@ -57,12 +57,13 @@ export class PersonDetailsComponent implements OnInit {
             if (result.isConfirmed) {
 
                 if (this.personForm.status === 'VALID') {
-                    if (myDate.day() < this.systemDate.day()) {
+                    if (myDate < this.systemDate) {
+                        const date = moment(myDate, 'YYYY-MM-DD 00:00:00');
                         const data = {
                             nome: this.personForm.controls.person_nome.value,
                             sexo: this.personForm.controls.person_sexo.value,
                             email: this.personForm.controls.person_email.value,
-                            dataNascimento: myDate,
+                            dataNascimento: date,
                             naturalidade: this.personForm.controls.person_naturalidade.value,
                             nacionalidade: this.personForm.controls.person_nacionalidade.value,
                             cpf: this.personForm.controls.person_cpf.value,
