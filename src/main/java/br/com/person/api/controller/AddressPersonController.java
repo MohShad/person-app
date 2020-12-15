@@ -49,7 +49,7 @@ public class AddressPersonController {
         try {
             if (addressPersonRepository.existsByCpf(addressPersonRequestDTO.getCpf())) {
                 return new ResponseEntity(new ApiResponseDTO(false, "Existe pessoa registrado com CPF: " + addressPersonRequestDTO.getCpf()),
-                        HttpStatus.BAD_REQUEST);
+                        HttpStatus.CONFLICT);
             }
             Long id = addressPersonService.savePerson(addressPersonRequestDTO);
 
@@ -76,7 +76,7 @@ public class AddressPersonController {
         try {
             if (!addressPersonRepository.existsByCpf(cpf)) {
                 return new ResponseEntity(new ApiResponseDTO(false, "Não existe pessoa registrado com CPF: " + cpf),
-                        HttpStatus.BAD_REQUEST);
+                        HttpStatus.CONFLICT);
             }
             AddressPerson person = addressPersonService.getByCpf(cpf);
             return new ResponseEntity<Person>(person, HttpStatus.ACCEPTED);
@@ -179,7 +179,7 @@ public class AddressPersonController {
             Optional<AddressPerson> person = addressPersonRepository.findById(id);
             if (!person.isPresent())
                 return new ResponseEntity(new ApiResponseDTO(false, "Não existe pessoa registrado com id: " + id),
-                        HttpStatus.BAD_REQUEST);
+                        HttpStatus.CONFLICT);
             Object pr = addressPersonService.updateById(addressPersonRequestUpdateDTO, id);
             return new ResponseEntity(new PersonResponseSaveDTO(true, "A pessoa foi atualizado com sucesso,", id), HttpStatus.CREATED);
 
@@ -205,7 +205,7 @@ public class AddressPersonController {
             Optional<AddressPerson> person = addressPersonRepository.findById(id);
             if (!person.isPresent())
                 return new ResponseEntity(new ApiResponseDTO(false, "Não existe pessoa registrado com id: " + id),
-                        HttpStatus.BAD_REQUEST);
+                        HttpStatus.CONFLICT);
             ResponseEntity<Object> pr = addressPersonService.deleteById(id);
             return new ResponseEntity(new PersonResponseSaveDTO(true, "A pessoa foi excluida com sucesso,", id), HttpStatus.ACCEPTED);
 

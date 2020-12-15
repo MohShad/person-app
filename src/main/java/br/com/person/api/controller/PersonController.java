@@ -2,8 +2,8 @@ package br.com.person.api.controller;
 
 import br.com.person.api.dto.ApiResponseDTO;
 import br.com.person.api.dto.PersonRequestDTO;
-import br.com.person.api.dto.PersonResponseSaveDTO;
 import br.com.person.api.dto.PersonRequestUpdateDTO;
+import br.com.person.api.dto.PersonResponseSaveDTO;
 import br.com.person.api.model.Person;
 import br.com.person.api.repository.PersonRepository;
 import br.com.person.api.service.PersonService;
@@ -48,7 +48,7 @@ public class PersonController {
         try {
             if (personRepository.existsByCpf(personRequestDTO.getCpf())) {
                 return new ResponseEntity(new ApiResponseDTO(false, "Existe pessoa registrado com CPF: " + personRequestDTO.getCpf()),
-                        HttpStatus.BAD_REQUEST);
+                        HttpStatus.CONFLICT);
             }
             Long id = personService.savePerson(personRequestDTO);
 
@@ -75,7 +75,7 @@ public class PersonController {
         try {
             if (!personRepository.existsByCpf(cpf)) {
                 return new ResponseEntity(new ApiResponseDTO(false, "Não existe pessoa registrado com CPF: " + cpf),
-                        HttpStatus.BAD_REQUEST);
+                        HttpStatus.CONFLICT);
             }
             Person person = personService.getByCpf(cpf);
             return new ResponseEntity<Person>(person, HttpStatus.ACCEPTED);
@@ -127,7 +127,7 @@ public class PersonController {
             Optional<Person> person = personRepository.findById(id);
             if (!person.isPresent()) {
                 return new ResponseEntity(new ApiResponseDTO(false, "A pessoa com ID: " + id + " não foi encontrado"),
-                        HttpStatus.BAD_REQUEST);
+                        HttpStatus.CONFLICT);
             }
             Person pr = personService.getById(id);
             return new ResponseEntity<Person>(pr, HttpStatus.ACCEPTED);
@@ -178,7 +178,7 @@ public class PersonController {
             Optional<Person> person = personRepository.findById(id);
             if (!person.isPresent())
                 return new ResponseEntity(new ApiResponseDTO(false, "Não existe pessoa registrado com id: " + id),
-                        HttpStatus.BAD_REQUEST);
+                        HttpStatus.CONFLICT);
             ResponseEntity<Person> pr = personService.updateById(personRequestUpdateDTO, id);
             return new ResponseEntity(new PersonResponseSaveDTO(true, "A pessoa foi atualizado com sucesso,", id), HttpStatus.CREATED);
 
@@ -204,7 +204,7 @@ public class PersonController {
             Optional<Person> person = personRepository.findById(id);
             if (!person.isPresent())
                 return new ResponseEntity(new ApiResponseDTO(false, "Não existe pessoa registrado com id: " + id),
-                        HttpStatus.BAD_REQUEST);
+                        HttpStatus.CONFLICT);
             ResponseEntity<Object> pr = personService.deleteById(id);
             return new ResponseEntity(new PersonResponseSaveDTO(true, "A pessoa foi excluida com sucesso,", id), HttpStatus.ACCEPTED);
 

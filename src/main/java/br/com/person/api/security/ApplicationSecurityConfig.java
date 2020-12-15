@@ -3,6 +3,7 @@ package br.com.person.api.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private Environment environment;
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -41,8 +44,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder authentication)
             throws Exception {
         authentication.inMemoryAuthentication()
-                .withUser("mohshad")
-                .password(passwordEncoder().encode("password"))
+                .withUser(environment.getProperty("security.username"))
+                .password(passwordEncoder().encode(environment.getProperty("security.password")))
                 .authorities("ROLE_ADMIN");
     }
 
