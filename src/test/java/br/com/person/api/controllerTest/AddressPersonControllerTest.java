@@ -1,33 +1,38 @@
 package br.com.person.api.controllerTest;
 
 import br.com.person.api.controller.AddressPersonController;
-import br.com.person.api.controller.PersonController;
 import br.com.person.api.dto.AddressPersonRequestDTO;
 import br.com.person.api.dto.ApiResponseDTO;
-import br.com.person.api.dto.PersonRequestDTO;
+import br.com.person.api.dto.PersonRequestUpdateDTO;
 import br.com.person.api.model.AddressPerson;
 import br.com.person.api.model.Person;
 import br.com.person.api.repository.AddressPersonRepository;
-import br.com.person.api.repository.PersonRepository;
 import br.com.person.api.service.AddressPersonService;
-import br.com.person.api.service.PersonService;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
 public class AddressPersonControllerTest {
 
     private static final Logger logger = LoggerFactory.getLogger(AddressPersonControllerTest.class);
@@ -40,6 +45,63 @@ public class AddressPersonControllerTest {
 
     @Mock
     private AddressPersonService addressPersonService;
+
+    @Mock
+    private AddressPerson addressPersonMock;
+
+    @Mock
+    private AddressPerson addressPersonMock01;
+
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(AddressPersonControllerTest.class);
+    }
+
+    @Before
+    public void init() {
+
+        List<AddressPerson> personList = new ArrayList<>();
+        addressPersonMock = new AddressPerson(
+                1L,
+                "Test",
+                "M",
+                "564fdd@gmail.com",
+                new Date(2010 - 12 - 12),
+                "test",
+                "test",
+                "01557866943",
+                new Date(),
+                "address01"
+        );
+
+        addressPersonMock01 = new AddressPerson(
+                2L,
+                "Test test",
+                "F",
+                "123fdd@gmail.com",
+                new Date(2010 - 12 - 12),
+                "test",
+                "test",
+                "01677866945",
+                new Date(),
+                "addres02"
+        );
+        personList.add(addressPersonMock);
+        personList.add(addressPersonMock01);
+
+        PersonRequestUpdateDTO personRequestUpdateDTO = new PersonRequestUpdateDTO();
+        personRequestUpdateDTO.setNome(addressPersonMock01.getNome());
+        personRequestUpdateDTO.setSexo(addressPersonMock01.getSexo());
+        personRequestUpdateDTO.setEmail(addressPersonMock01.getEmail());
+        personRequestUpdateDTO.setDataNascimento(addressPersonMock01.getDataNascimento());
+        personRequestUpdateDTO.setNaturalidade(addressPersonMock01.getNaturalidade());
+        personRequestUpdateDTO.setNacionalidade(addressPersonMock01.getNacionalidade());
+
+        when(addressPersonRepository.findById(addressPersonMock.getId())).thenReturn(Optional.of(addressPersonMock));
+        when(addressPersonService.getAll(0, 10)).thenReturn(personList);
+        when(addressPersonRepository.existsByCpf("01557866943")).thenReturn(false);
+
+    }
 
     @Test
     public void registerAddressPersonTestController() {
@@ -132,5 +194,17 @@ public class AddressPersonControllerTest {
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(202);
         assertNotNull(responseEntity.getBody());
         assertEquals("Test test", responseEntity.getBody().getNome());
+    }
+
+    @Test
+    public void getAllTestController() {
+
+        logger.info("POST - Person-v1, getAllTestController");
+
+        List<AddressPerson> prList = addressPersonService.getAll(0, 10);
+
+        assertNotSame(prList.get(0).getId(), prList.get(1).getId());
+        assertEquals(prList.get(0).getNacionalidade(), prList.get(1).getNacionalidade());
+
     }
 }
