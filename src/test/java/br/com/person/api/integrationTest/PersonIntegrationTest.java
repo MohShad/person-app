@@ -149,7 +149,7 @@ public class PersonIntegrationTest {
                 createURLWithPort("/api/v1/person/" + person.getId()),
                 HttpMethod.DELETE, entity, PersonResponseSaveDTO.class);
 
-        assertEquals(409, response.getStatusCodeValue());
-        assertEquals(false, response.getBody().getSuccess());
+        assertEquals(202, response.getStatusCodeValue());
+        assertEquals(true, response.getBody().getSuccess());
     }
 }

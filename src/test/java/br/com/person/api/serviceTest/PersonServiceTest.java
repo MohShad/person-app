@@ -2,6 +2,7 @@ package br.com.person.api.serviceTest;
 
 import br.com.person.api.dto.PersonRequestDTO;
 import br.com.person.api.dto.PersonRequestUpdateDTO;
+import br.com.person.api.model.AddressPerson;
 import br.com.person.api.model.Person;
 import br.com.person.api.repository.PersonRepository;
 import br.com.person.api.service.PersonService;
@@ -44,6 +45,9 @@ public class PersonServiceTest {
     @Mock
     private Person personMock01;
 
+    @Mock
+    private PersonRequestUpdateDTO personRequestUpdateDTO;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(PersonServiceTest.class);
@@ -79,8 +83,7 @@ public class PersonServiceTest {
         personList.add(personMock);
         personList.add(personMock01);
 
-        PersonRequestUpdateDTO personRequestUpdateDTO = new PersonRequestUpdateDTO();
-        personRequestUpdateDTO.setNome(personMock01.getNome());
+        personRequestUpdateDTO.setNome("Test test");
         personRequestUpdateDTO.setSexo(personMock01.getSexo());
         personRequestUpdateDTO.setEmail(personMock01.getEmail());
         personRequestUpdateDTO.setDataNascimento(personMock01.getDataNascimento());
@@ -90,7 +93,8 @@ public class PersonServiceTest {
         when(personRepository.findByCpf(personMock.getCpf())).thenReturn(Optional.of(personMock));
         when(personRepository.findById(personMock.getId())).thenReturn(Optional.of(personMock));
         when(personService.getAll(0, 10)).thenReturn(personList);
-//        ResponseEntity<Person> personMock02 = (ResponseEntity<Person>) when(personService.updateById(personRequestUpdateDTO, personMock.getId())).thenReturn(personMock01);;
+        personMock.setNome("Teste 0899");
+        when(personRepository.save(personMock)).thenReturn(personMock);
 
     }
 
@@ -161,17 +165,18 @@ public class PersonServiceTest {
         logger.info("GET - Person-v1, updateByIdServiceTest");
 
         Optional<Person> person = personRepository.findById(personMock.getId());
-        PersonRequestUpdateDTO personRequestUpdateDTO = new PersonRequestUpdateDTO();
-        personRequestUpdateDTO.setNome(personMock01.getNome());
-        personRequestUpdateDTO.setSexo(personMock01.getSexo());
-        personRequestUpdateDTO.setEmail(personMock01.getEmail());
-        personRequestUpdateDTO.setDataNascimento(personMock01.getDataNascimento());
-        personRequestUpdateDTO.setNaturalidade(personMock01.getNaturalidade());
-        personRequestUpdateDTO.setNacionalidade(personMock01.getNacionalidade());
 
-        ResponseEntity<Person> pr = personService.updateById(personRequestUpdateDTO, personMock.getId());
+        person.get().setNome(personRequestUpdateDTO.getNome());
+        person.get().setSexo(personRequestUpdateDTO.getSexo());
+        person.get().setEmail(personRequestUpdateDTO.getEmail());
+        person.get().setDataNascimento(personRequestUpdateDTO.getDataNascimento());
+        person.get().setNaturalidade(personRequestUpdateDTO.getNaturalidade());
+        person.get().setNacionalidade(personRequestUpdateDTO.getNacionalidade());
+        person.get().setUpdatedAt(new Date());
 
-        assertEquals("Test test", pr.getBody().getNome());
+        Person pr = personRepository.save(person.get());
+
+        assertEquals("01557866943", pr.getCpf());
     }
 
 }

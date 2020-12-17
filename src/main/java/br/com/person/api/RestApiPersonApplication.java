@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories("br.com.person.api.repository")
 public class RestApiPersonApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(RestApiPersonApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(RestApiPersonApplication.class, args);
+    }
 
 }

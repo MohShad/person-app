@@ -23,7 +23,7 @@ public class SourceCodeController {
             @ApiResponse(code = 401, message = "Não autorizado"),
             @ApiResponse(code = 202, message = "Retorno do Url.")
     })
-    @GetMapping({"v1/source","v2/source"})
+    @GetMapping({"v1/source", "v2/source"})
     public ResponseEntity<?> getSourceCode() {
         logger.info("GET - Source Code, getSourceCode");
         String gitHubUrl = "https://github.com/MohShad/rest-api-person/tree/master";

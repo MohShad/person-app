@@ -5,6 +5,7 @@ import br.com.person.api.dto.AddressPersonRequestUpdateDTO;
 import br.com.person.api.model.AddressPerson;
 import br.com.person.api.model.Person;
 import br.com.person.api.repository.AddressPersonRepository;
+import br.com.person.api.repository.PersonRepository;
 import br.com.person.api.service.AddressPersonService;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +16,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +34,9 @@ public class AddressPersonServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(AddressPersonServiceTest.class);
 
     @Mock
+    private PersonRepository personRepository;
+
+    @Mock
     private AddressPersonRepository addressPersonRepository;
 
     @Mock
@@ -44,6 +47,9 @@ public class AddressPersonServiceTest {
 
     @Mock
     private AddressPerson addressPersonMock01;
+
+    @Mock
+    private AddressPersonRequestUpdateDTO addressPersonRequestUpdateDTO;
 
     @Before
     public void setUp() {
@@ -65,7 +71,6 @@ public class AddressPersonServiceTest {
                 "01557866943",
                 new Date(),
                 "address01"
-
         );
 
         addressPersonMock01 = new AddressPerson(
@@ -84,8 +89,7 @@ public class AddressPersonServiceTest {
         addressPersonList.add(addressPersonMock);
         addressPersonList.add(addressPersonMock01);
 
-        AddressPersonRequestUpdateDTO addressPersonRequestUpdateDTO = new AddressPersonRequestUpdateDTO();
-        addressPersonRequestUpdateDTO.setNome(addressPersonMock01.getNome());
+        addressPersonRequestUpdateDTO.setNome("Teste 0899");
         addressPersonRequestUpdateDTO.setSexo(addressPersonMock01.getSexo());
         addressPersonRequestUpdateDTO.setEmail(addressPersonMock01.getEmail());
         addressPersonRequestUpdateDTO.setDataNascimento(addressPersonMock01.getDataNascimento());
@@ -94,9 +98,11 @@ public class AddressPersonServiceTest {
         addressPersonRequestUpdateDTO.setAddress(addressPersonMock01.getAddress());
 
         when(addressPersonRepository.findByCpf(addressPersonMock.getCpf())).thenReturn(Optional.of(addressPersonMock));
+        when(personRepository.findById(addressPersonMock.getId())).thenReturn(Optional.of(addressPersonMock));
         when(addressPersonRepository.findById(addressPersonMock.getId())).thenReturn(Optional.of(addressPersonMock));
         when(addressPersonService.getAll(0, 10)).thenReturn(addressPersonList);
-        when(addressPersonService.updateById(addressPersonRequestUpdateDTO, addressPersonMock.getId())).thenReturn(addressPersonMock01);
+        when(personRepository.save(addressPersonMock)).thenReturn(addressPersonMock);
+        when(addressPersonRepository.save(addressPersonMock)).thenReturn(addressPersonMock);
 
     }
 
@@ -168,18 +174,21 @@ public class AddressPersonServiceTest {
     public void updateByIdServiceTest() {
         logger.info("GET - Person-v2, updateByIdServiceTest");
 
-        Optional<AddressPerson> person = addressPersonRepository.findById(addressPersonMock.getId());
-        AddressPersonRequestUpdateDTO addressPersonRequestUpdateDTO = new AddressPersonRequestUpdateDTO();
-        addressPersonRequestUpdateDTO.setNome(person.get().getNome());
-        addressPersonRequestUpdateDTO.setSexo(person.get().getSexo());
-        addressPersonRequestUpdateDTO.setEmail(person.get().getEmail());
-        addressPersonRequestUpdateDTO.setDataNascimento(person.get().getDataNascimento());
-        addressPersonRequestUpdateDTO.setNaturalidade(person.get().getNaturalidade());
-        addressPersonRequestUpdateDTO.setNacionalidade(person.get().getNacionalidade());
-        addressPersonRequestUpdateDTO.setAddress(person.get().getAddress());
+        Optional<Person> person = personRepository.findById(addressPersonMock.getId());
+        Optional<AddressPerson> addressperson = addressPersonRepository.findById(addressPersonMock.getId());
 
-        ResponseEntity<AddressPerson> pr = (ResponseEntity<AddressPerson>) addressPersonService.updateById(addressPersonRequestUpdateDTO, addressPersonMock.getId());
+        person.get().setNome(addressPersonRequestUpdateDTO.getNome());
+        person.get().setSexo(addressPersonRequestUpdateDTO.getSexo());
+        person.get().setEmail(addressPersonRequestUpdateDTO.getEmail());
+        person.get().setDataNascimento(addressPersonRequestUpdateDTO.getDataNascimento());
+        person.get().setNaturalidade(addressPersonRequestUpdateDTO.getNaturalidade());
+        person.get().setNacionalidade(addressPersonRequestUpdateDTO.getNacionalidade());
+        person.get().setUpdatedAt(new Date());
 
-        assertEquals("Test test", pr.getBody().getNome());
+        Person pr = personRepository.save(person.get());
+        addressperson.get().setAddress(addressPersonMock.getAddress());
+        AddressPerson addressPerson = addressPersonRepository.save(addressperson.get());
+
+        assertEquals("address01", addressPerson.getAddress());
     }
 }
