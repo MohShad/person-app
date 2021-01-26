@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 import { Person } from '../model/Person';
 
-const baseUrl = 'https://backend-person.azurewebsites.net/api/v1/person';
+const baseUrl = 'http://localhost:8080/api/v1/person';
 
 @Injectable({
     providedIn: 'root'

@@ -24,7 +24,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/person")
-@CrossOrigin(origins = "https://frontend-person.azurewebsites.net")
+@CrossOrigin(origins = "http://localhost:4200")
 public class PersonController {
 
     private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
