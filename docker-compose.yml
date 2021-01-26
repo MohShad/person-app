@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  backendserver:
+    build:
+      context: ../REST-API-PERSON/
+      args:
+        - PORT=8080
+    image: mohshad/restapi-person
+    ports:
+      - "8080:8080"
+  frontend:
+    build:
+      context: ./front-end/
+      args:
+        - PORT=4200
+    image: mohshad/frontend-person
+    links:
+      - "backendserver"
+    depends_on:
+      - "backendserver"
+    ports:
+      - "4200:4200"

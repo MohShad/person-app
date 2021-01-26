@@ -1,0 +1,25 @@
+pool:
+    vmImage: 'ubuntu-latest'
+
+steps:
+    - task: NodeTool@0
+      inputs:
+          versionSpec: '12.x'
+      displayName: 'Install Node.js'
+    - task: CmdLine@2
+      inputs:
+          script: |
+              cd front-end
+              npm install -g @angular/cli
+              npm install
+              npm run build
+
+    - task: CopyFiles@2
+      inputs:
+          SourceFolder: '$(System.DefaultWorkingDirectory)/front-end/dist/frontend-person'
+          Contents: '**'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)/dist'
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: drop'
+      inputs:
+          PathtoPublish: '$(build.artifactstagingdirectory)'
