@@ -1,4 +1,4 @@
-# REST-API-PERSON
+# PERSON-APP
 
 Person app has a crud rest-api with spring-boot and front-end with anglar 11.0.3.
 The version 2(/api/v2/person/**) of the API which was included the person's address as mandatory data. Version 1 continue to work 
